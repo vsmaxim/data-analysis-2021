@@ -15,6 +15,7 @@ def get_stats_df(df: pd.DataFrame) -> pd.DataFrame:
     return df.describe().transpose().drop("count", axis=1)
 
 
+
 def plot_distplot_matrix(df: pd.DataFrame, columns: Iterable[str], cols: int = 3):
     """
     For given dataframe and columns plots multiple dist plots (histogram with density plots).
@@ -34,10 +35,32 @@ def plot_distplot_matrix(df: pd.DataFrame, columns: Iterable[str], cols: int = 3
         current_ax.legend(loc='best')
 
     plt.show()
+
+    
+
+def plot_histplot_matrix(df: pd.DataFrame, columns: Iterable[str], cols: int = 3):
+    """
+    For given dataframe and columns plots multiple dist plots (histogram with density plots).
+    
+    :param df: dataframe to plot graphics from
+    :param columns: columns to plot
+    :return: None
+    """
+    rows = math.ceil(len(columns) / cols)
+    fig, ax = plt.subplots(rows, cols, figsize=(7 * cols, 6 * rows))
+
+    for index, column in enumerate(columns):
+        row, col = index // cols, index % cols
+        current_ax = ax[row, col] if rows > 1 else ax[col]
+        sns.histplot(ax=current_ax, data=df, x=column)
+        current_ax.set_title(column, fontsize=15)
+        current_ax.legend(loc='best')
+
+    plt.show()
+
 import math
 
 
- 
 
 def convert_money_to_usd(v: str) -> float:
     """
